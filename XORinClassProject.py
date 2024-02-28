@@ -1,3 +1,5 @@
+import math
+
 characters = [
     # lowercase characters
 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
@@ -34,7 +36,7 @@ def XORonByte(byte, key):
     
     return emsg
 
-print(XORonByte('10101', '00101'))
+#print(XORonByte('10101', '00101'))
 
 def XORonLetter(letter, keyLetter):
 
@@ -48,11 +50,34 @@ def XORonLetter(letter, keyLetter):
 def XORonSentence(sentence, key):
 
     encryptedSentence = ""
+    genKey = generateKey(sentence, key)
 
     for i in range(len(sentence)):
 
-        encryptedSentence += XORonLetter(sentence[i], key[i])
-    
+        encryptedSentence += XORonLetter(sentence[i], genKey[i])
+
     return encryptedSentence
-print(XORonSentence("hello", "world"))
-print(XORonSentence("rkAan", "world"))
+
+def generateKey(message, key):
+
+    if len(message) == len(key):
+        return key
+    elif len(message) < len(key):
+        return key[0:len(message)]
+    else:
+        tempKey = ""
+        repititions = math.floor(len(message)/len(key))
+        remainder = len(message) % len(key)
+
+        for i in range(repititions):
+            tempKey += key
+
+        tempKey += key[0:remainder]
+
+        return tempKey
+    
+
+message = input("Please enter your message that you either want to encrypt or decrypt. ")
+key = input("Please enter the key. ")
+
+print("Here is your encrypted/decrypted message: ", XORonSentence(message, key))
